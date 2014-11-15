@@ -1,0 +1,162 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: wubi86t
+  name: "五笔86并击"
+  version: "0.20"
+  author:
+    - 發明人 王永民先生
+    - 并击功能添加 逍遥猪葛亮
+    - 并击键位 小仙
+  description: |
+    五筆字型86版——小仙并击版
+    碼表源自 ibus-table
+    敲 z 鍵進入拼音反查
+  dependencies:
+    - pinyin_simp
+
+switches:
+  - name: ascii_mode
+    reset: 1
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    states: [ ，。, ，． ]
+  - name: extended_charset
+    states: [ 通用, 增廣 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - chord_composer  # 實現並擊按鍵處理
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+
+speller:
+  delimiter: " ;'"
+  #max_code_length: 4
+
+translator:
+  dictionary: wubi86
+  enable_charset_filter: true
+  enable_sentence: true
+  enable_encoder: true
+  encode_commit_history: true
+  max_phrase_length: 4
+  disable_user_dict_for_patterns:
+    - "^z.*$"
+
+reverse_lookup:
+  dictionary: pinyin_simp
+  prefix: "z"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+  patterns:
+    reverse_lookup: "^z[a-z]*'?$"
+
+chord_composer:
+  # 字母表，包含用於並擊的按鍵
+  # 擊鍵雖有先後，形成並擊時，一律以字母表順序排列
+  alphabet: "qwertasdfgzxcvbyuiophjkl;nm,./ "
+  # 拼寫運算規則，將一組並擊編碼轉換爲拼音音節
+  algebra:
+    - 'xlit|qwertasdfgzxcvbyuiophjkl;nm,./|qwertasdfgzxcvbyuiophjkl1nm234|'
+    # 左手
+    - xform/^df/Y/
+    - xform/^dv/U/
+    - xform/^sf/I/
+    - xform/^sd/O/
+    - xform/^xc/P/
+    - xform/^er/H/
+    - xform/^ef/J/
+    - xform/^wr/K/
+    - xform/^we/L/
+    - xform/^cv/N/
+    - xform/^xv/M/
+    - xform/^q/Q/
+    - xform/^w/W/
+    - xform/^e/E/
+    - xform/^r/R/
+    - xform/^t/T/
+    - xform/^a/A/
+    - xform/^s/S/
+    - xform/^d/D/
+    - xform/^f/F/
+    - xform/^g/G/
+    - xform/^z/Z/
+    - xform/^x/X/
+    - xform/^c/C/
+    - xform/^v/V/
+    - xform/^b/B/
+    # 右手
+    - xform/23$/P/
+    - xform/kl$/O/
+    - xform/jl$/I/
+    - xform/km$/U/
+    - xform/jk$/Y/
+    - xform/io$/L/
+    - xform/ou$/K/
+    - xform/ij$/J/
+    - xform/ui$/H/
+    - xform/m3$/M/
+    - xform/m2$/N/
+    - xform/3$/X/
+    - xform/4$/Z/
+    - xform/y$/T/
+    - xform/u$/R/
+    - xform/i$/E/
+    - xform/o$/W/
+    - xform/p$/Q/
+    - xform/h$/G/
+    - xform/j$/F/
+    - xform/k$/D/
+    - xform/l$/S/
+    - xform/1$/A/
+    - xform/n$/B/
+    - xform/m$/V/
+    - xform/2$/C/
+    # 符号
+    - xform/^1 $/;/
+    - xform/^2 $/,/
+    - xform/^3 $/./
+    - xform/^4 $/\//
+
+    # 转回来
+  output_format:
+    - "erase/^.*[a-z1-9].*$/"
+    - xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz|
+  # 並擊完成後套用的式樣
+  prompt_format:
+    - xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz|
+    # 加方括弧
+    - "xform/^(.*)$/[$1]/"
