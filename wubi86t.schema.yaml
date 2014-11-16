@@ -119,44 +119,58 @@ chord_composer:
     - xform/^v/V/
     - xform/^b/B/
     # 右手
-    - xform/23$/P/
-    - xform/kl$/O/
-    - xform/jl$/I/
-    - xform/km$/U/
-    - xform/jk$/Y/
-    - xform/io$/L/
-    - xform/ou$/K/
-    - xform/ij$/J/
-    - xform/ui$/H/
-    - xform/m3$/M/
-    - xform/m2$/N/
-    - xform/3$/X/
-    - xform/4$/Z/
-    - xform/y$/T/
-    - xform/u$/R/
-    - xform/i$/E/
-    - xform/o$/W/
-    - xform/p$/Q/
-    - xform/h$/G/
-    - xform/j$/F/
-    - xform/k$/D/
-    - xform/l$/S/
-    - xform/1$/A/
-    - xform/n$/B/
-    - xform/m$/V/
-    - xform/2$/C/
+    - xform/(?<!^)23$/P/
+    - xform/(?<!^)kl$/O/
+    - xform/(?<!^)jl$/I/
+    - xform/(?<!^)km$/U/
+    - xform/(?<!^)jk$/Y/
+    - xform/(?<!^)io$/L/
+    - xform/(?<!^)ou$/K/
+    - xform/(?<!^)ij$/J/
+    - xform/(?<!^)ui$/H/
+    - xform/(?<!^)m3$/M/
+    - xform/(?<!^)m2$/N/
+    - xform/(?<!^)3$/X/
+    - xform/(?<!^)4$/Z/
+    - xform/(?<!^)y$/T/
+    - xform/(?<!^)u$/R/
+    - xform/(?<!^)i$/E/
+    - xform/(?<!^)o$/W/
+    - xform/(?<!^)p$/Q/
+    - xform/(?<!^)h$/G/
+    - xform/(?<!^)j$/F/
+    - xform/(?<!^)k$/D/
+    - xform/(?<!^)l$/S/
+    - xform/(?<!^)1$/A/
+    - xform/(?<!^)n$/B/
+    - xform/(?<!^)m$/V/
+    - xform/(?<!^)2$/C/
     # 符号
-    - xform/^1 $/;/
-    - xform/^2 $/,/
-    - xform/^3 $/./
-    - xform/^4 $/\//
+    - xform/^1$/;/
+    - xform/^2$/,/
+    - xform/^3$/./
+    - xform/^4$/\//
+    - xform/^y$/@/
+    - xform/^u$/^/
+    - xform/^i$/!/
+    - xform/^o$/?/
+    - xform/^p$/~/
+    - xform/^n$/(/
+    - xform/^m$/)/
+
+    #  选字
+    - xform/^h$/7/
+    - xform/^j$/8/
+    - xform/^k$/9/
+    - xform/^l$/0/
 
     # 转回来
   output_format:
-    - "erase/^.*[a-z1-9].*$/"
-    - xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz|
+    - "erase/^.*[a-z1-6].*$/"
+    - xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ7890|abcdefghijklmnopqrstuvwxyz1234|
   # 並擊完成後套用的式樣
   prompt_format:
+    - "erase/^.*[a-z1-9].*$/"
     - xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz|
     # 加方括弧
     - "xform/^(.*)$/[$1]/"
