@@ -125,7 +125,7 @@ chord_composer:
     - xform/(?<!^)km$/U/
     - xform/(?<!^)jk$/Y/
     - xform/(?<!^)io$/L/
-    - xform/(?<!^)ou$/K/
+    - xform/(?<!^)uo$/K/
     - xform/(?<!^)ij$/J/
     - xform/(?<!^)ui$/H/
     - xform/(?<!^)m3$/M/
